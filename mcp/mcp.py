@@ -3,7 +3,7 @@ from typing import TYPE_CHECKING
 from dipdup import mcp
 from tortoise.expressions import Q
 
-from advanced_mcp_tutorial import models
+from dipdup_mcp_tutorial import models
 
 if TYPE_CHECKING:
     from dipdup.context import McpContext

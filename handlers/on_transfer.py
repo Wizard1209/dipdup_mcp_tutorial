@@ -1,8 +1,8 @@
 from dipdup.context import HandlerContext
 from dipdup.models.evm import EvmEvent
 
-from advanced_mcp_tutorial import models
-from advanced_mcp_tutorial.types.erc20.evm_events.transfer import TransferPayload
+from dipdup_mcp_tutorial import models
+from dipdup_mcp_tutorial.types.erc20.evm_events.transfer import TransferPayload
 
 
 async def on_transfer(

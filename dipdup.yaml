@@ -1,5 +1,5 @@
 spec_version: 3.0
-package: advanced_mcp_tutorial
+package: dipdup_mcp_tutorial
 
 datasources:
   subsquid:
