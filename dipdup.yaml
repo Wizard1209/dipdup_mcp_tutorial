@@ -13,12 +13,6 @@ datasources:
     url: https://eth-mainnet.g.alchemy.com/v2/${NODE_API_KEY:-''}
     ws_url: wss://eth-mainnet.g.alchemy.com/v2/${NODE_API_KEY:-''}
 
-contracts:
-  eth_usdt:
-    kind: evm
-    address: 0xdac17f958d2ee523a2206206994597c13d831ec7
-    typename: erc20
-
 templates:
   erc20_events:
     kind: evm.events
@@ -30,14 +24,6 @@ templates:
       - callback: on_transfer
         contract: <contract>
         name: Transfer
-
-indexes:
-  usdt:
-    kind: template
-    template: erc20_events
-    values:
-      contract: eth_usdt
-    first_level: 4634748
 
 api:
   host: 0.0.0.0

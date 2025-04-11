@@ -13,10 +13,9 @@ async def on_transfer(
     # Get or create token record
     token = await models.Token.get_or_none(address=event.data.address)
     if token is None:
-        contract_name = (c.name for c in ctx.config.contracts.values() if c.address == event.data.address)
         token = models.Token(
             address=event.data.address,
-            name=next(contract_name, 'Unknown'),
+            name='Unknown',
         )
         await token.save()
 
