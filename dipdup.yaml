@@ -1,0 +1,57 @@
+spec_version: 3.0
+package: advanced_mcp_tutorial
+
+datasources:
+  subsquid:
+    kind: evm.subsquid
+    url: https://v2.archive.subsquid.io/network/ethereum-mainnet
+  etherscan:
+    kind: evm.etherscan
+    url: https://api.etherscan.io/api
+  evm_node:
+    kind: evm.node
+    url: https://eth-mainnet.g.alchemy.com/v2/${NODE_API_KEY:-''}
+    ws_url: wss://eth-mainnet.g.alchemy.com/v2/${NODE_API_KEY:-''}
+
+contracts:
+  eth_usdt:
+    kind: evm
+    address: 0xdac17f958d2ee523a2206206994597c13d831ec7
+    typename: erc20
+
+templates:
+  erc20_events:
+    kind: evm.events
+    datasources:
+      - subsquid
+      - etherscan
+      - evm_node
+    handlers:
+      - callback: on_transfer
+        contract: <contract>
+        name: Transfer
+
+indexes:
+  usdt:
+    kind: template
+    template: erc20_events
+    values:
+      contract: eth_usdt
+    first_level: 4634748
+
+api:
+  host: 0.0.0.0
+  port: 46339
+
+mcp:
+  host: 0.0.0.0
+  port: 9999
+  api_url: http://localhost:46339
+
+database:
+  kind: postgres
+  host: localhost
+  port: 5432
+  user: dipdup
+  password: ${POSTGRES_PASSWORD:-changeme}
+  database: dipdup
