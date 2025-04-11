@@ -26,8 +26,8 @@ export NODE_API_KEY=your_alchemy_api_key
 ### Run
 
 ```shell
-dipdup run
-dipdup mcp run
+dipdup -e .env -С sqlite run
+dipdup -e .env -C sqlite mcp run
 ```
 
 MCP server runs at http://localhost:9999

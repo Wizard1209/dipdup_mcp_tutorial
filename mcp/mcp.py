@@ -1,16 +1,13 @@
-from typing import TYPE_CHECKING
-
 from dipdup import mcp
+from dipdup.mcp import _get_indexer_url
+from dipdup.mcp import api_call
 from tortoise.expressions import Q
 
 from dipdup_mcp_tutorial import models
 
-if TYPE_CHECKING:
-    from dipdup.context import McpContext
-
 # Constants for indexer-specific settings
 ERC20_TEMPLATE_NAME = 'erc20_events'  # The template to use for ERC20 event indexes
-ERC20_INDEX_PREFIX = 'erc20_'  # Prefix for auto-generated index names
+ERC20_INDEX_PREFIX = 'transfers_'  # Prefix for auto-generated index names
 ERC20_TYPENAME = 'erc20'
 
 
@@ -34,29 +31,35 @@ async def add_erc20_token(
     Returns:
         A message confirming the contract and index were added
     """
-    ctx: McpContext = mcp.get_ctx()
+    # Get the indexer API URL
+    url = _get_indexer_url()
 
-    # Add the contract to the indexer
-    await ctx.add_contract(
-        kind='evm',
-        name=token_name,
-        address=token_address,
-        typename=ERC20_TYPENAME,
+    # Add the contract to the indexer via API call
+    await api_call(
+        url=url,
+        method='post',
+        path='/add_contract',
+        params={
+            'kind': 'evm',
+            'name': token_name,
+            'address': token_address,
+            'typename': ERC20_TYPENAME,
+        },
     )
 
-    # Prepare template values
-    template_values = {
-        'contract': token_name,
-    }
-
-    # Add the index from template
+    # Add the index from template via API call
     index_name = f'{ERC20_INDEX_PREFIX}{token_name}_events'
-    await ctx.add_index(
-        name=index_name,
-        template=ERC20_TEMPLATE_NAME,
-        values=template_values,
-        first_level=first_level,
-        last_level=last_level,
+    await api_call(
+        url=url,
+        method='post',
+        path='/add_index',
+        params={
+            'name': index_name,
+            'template': ERC20_TEMPLATE_NAME,
+            'values': {'contract': token_name},
+            'first_level': first_level,
+            'last_level': last_level,
+        },
     )
 
     return f"Successfully added ERC20 token '{token_name}' at address {token_address} and created index '{index_name}'"

@@ -1,6 +1,19 @@
 name: dipdup_mcp_tutorial
 
 services:
+  dipdup:
+    build:
+      context: ..
+      dockerfile: deploy/Dockerfile
+    restart: always
+    env_file: .env
+    ports:
+      - 46339
+      - 9000
+    command: ["-C", "compose", "run"]
+    depends_on:
+      - db
+
   db:
     image: postgres:16
     ports:
@@ -8,16 +21,28 @@ services:
     volumes:
       - db:/var/lib/postgresql/data
     restart: always
-    # env_file: .env
+    env_file: .env
     environment:
-      - POSTGRES_USER=dipdup
-      - POSTGRES_DB=dipdup
+      - POSTGRES_USER=${POSTGRES_USER:-dipdup}
+      - POSTGRES_DB=${POSTGRES_DB:-dipdup}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-changeme}
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U dipdup"]
       interval: 10s
       timeout: 5s
       retries: 5
+
+  mcp:
+    build:
+      context: ..
+      dockerfile: deploy/Dockerfile
+    restart: always
+    env_file: .env
+    ports:
+      - 9999
+    command: ["-C", "compose", "mcp", "run"]
+    depends_on:
+      - db
 
 volumes:
   db:
