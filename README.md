@@ -47,4 +47,10 @@ Built with [DipDup](https://dipdup.io) - Documentation: [dipdup.io/docs](https:/
 
 ## Scenaries
 
-Track USDC transfers, ask perplexity for correct contract address and from which block to start indexer. Add transfers index. Answer very briefly.
+Hi Copilot, how's my indexer doing? Please, answer very briefly in this dialog.
+
+Track USDC transfers, ask perplexity for correct contract address and block that was two years ago, add transfers index with these parameters.
+
+Index USDT from same block
+
+What do you know about token transfers to 0x29942F10A7442D23b926Dd7FE28955b9054Ebf7c?

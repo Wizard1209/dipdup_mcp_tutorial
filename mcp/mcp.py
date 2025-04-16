@@ -1,6 +1,4 @@
 from dipdup import mcp
-from dipdup.mcp import _get_indexer_url
-from dipdup.mcp import api_call
 from tortoise.expressions import Q
 
 from dipdup_mcp_tutorial import models
@@ -12,7 +10,7 @@ ERC20_TYPENAME = 'erc20'
 
 
 @mcp.tool(
-    'AddAndIndexErc20TokenContract', 'Add an ERC20 token contract and create an event index for tracking transfers'
+    'AddIndexForERC20Token', 'Add an ERC20 token contract and create an event index for tracking transfers'
 )
 async def add_erc20_token(
     token_name: str,
@@ -32,11 +30,10 @@ async def add_erc20_token(
         A message confirming the contract and index were added
     """
     # Get the indexer API URL
-    url = _get_indexer_url()
+    ctx = mcp.get_ctx()
 
     # Add the contract to the indexer via API call
-    await api_call(
-        url=url,
+    add_c_resp = await ctx.call_api(
         method='post',
         path='/add_contract',
         params={
@@ -49,8 +46,7 @@ async def add_erc20_token(
 
     # Add the index from template via API call
     index_name = f'{ERC20_INDEX_PREFIX}{token_name}_events'
-    await api_call(
-        url=url,
+    add_i_resp = await ctx.call_api(
         method='post',
         path='/add_index',
         params={
@@ -62,7 +58,7 @@ async def add_erc20_token(
         },
     )
 
-    return f"Successfully added ERC20 token '{token_name}' at address {token_address} and created index '{index_name}'"
+    return f'Calling add contract: {add_c_resp or 'Success'}\nCalling add index: {add_i_resp or 'Success'}'
 
 
 @mcp.tool('GetTokenTransfers', 'Get token transfers to or from a specific address')
