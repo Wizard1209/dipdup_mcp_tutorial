@@ -58,6 +58,10 @@ async def add_erc20_token(
         },
     )
 
+    # Save token info to the database
+    token = models.Token(address=token_address, name=token_name)
+    await token.save()
+
     return f'Calling add contract: {add_c_resp or 'Success'}\nCalling add index: {add_i_resp or 'Success'}'
 
 
@@ -103,9 +107,9 @@ async def get_token_transfers(
         token_display = f'{token_name}' if t.token.name else f'Token at {t.token.address[:10]}...'
 
         result.append(
-            f'{i}. {t.from_address} → {t.to_address} | '
-            f'{t.value} {token_display} | '
-            f'Block: {t.level} | Tx: {t.transaction_hash[:10]}...'
+            f'{i}. {t.from_address} → {t.to_address}\n'
+            f'{t.value} {token_display} raw units\n'
+            f'Block: {t.level}, Tx: ...{t.transaction_hash[-4:]}'
         )
 
     return '\n'.join(result)

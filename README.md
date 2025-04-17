@@ -50,4 +50,5 @@ Built with [DipDup](https://dipdup.io) - Documentation: [dipdup.io/docs](https:/
 > Hi Copilot, how's my indexer doing? Please, answer very briefly in this dialog.
 > Track USDC transfers, ask Perplexity for correct contract address and block that was two years ago, add transfers index with these parameters.
 > Index USDT from same block
-> What do you know about token transfers to  0x29942F10A7442D23b926Dd7FE28955b9054Ebf7c?
+> What is the volume of token transfers for address 0xbf51c5f00f4435536ed26e23073c6fd0990a32ed and for what time period?
+> Give me a quick summary of token transactions for 0x8a4497f460afa320f372114981de0198e2166095
