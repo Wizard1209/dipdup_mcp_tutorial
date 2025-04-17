@@ -39,7 +39,7 @@ services:
     restart: always
     env_file: .env
     ports:
-      - 9999
+      - 9999:9999
     command: ["-C", "compose", "mcp", "run"]
     depends_on:
       - db
